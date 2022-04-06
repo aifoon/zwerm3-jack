@@ -1,7 +1,8 @@
 {
   "name": "@zwerm3/jack",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A package with all the jack and jacktrip logic for zwerm3",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
