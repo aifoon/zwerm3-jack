@@ -21,6 +21,8 @@ import {
 import { isJacktripRunning } from './jack/Jacktrip';
 import { getJackHubClients } from './jack/JackHubClients';
 import { connectChannel, disconnectChannel } from './jack/JackChannels';
+import * as Zwerm3JackTypes from './interfaces';
+import * as Zwerm3JackEnums from './enums';
 
 export {
   connectChannel,
@@ -39,4 +41,6 @@ export {
   startJacktripServerAsync,
   startJacktripClient,
   startJacktripClientAsync,
+  Zwerm3JackTypes,
+  Zwerm3JackEnums,
 };

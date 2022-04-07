@@ -23,7 +23,7 @@ export interface JacktripPathsOptions {
   jacktripVersion: string;
 }
 
-interface JacktripParams {
+export interface JacktripParams {
   bitRate?: BitRate;
   channels?: number;
   debug?: boolean;
