@@ -2,7 +2,8 @@
  * Logic to manage the Jack Daemon
  */
 
-import { spawn, spawnSync } from 'child_process';
+import * as ps from 'ps-node';
+import { spawn } from 'child_process';
 import { JackParams, RunningCommand, OptionalParams } from '../interfaces';
 import { CLIParams } from '../CLIParams';
 import {
@@ -45,19 +46,24 @@ const getDeviceParams = (): CLIParams => {
  * Gets a boolean value if the Jack Daemon is running or not
  * @returns boolean
  */
-export const isJackDmpRunning = (): boolean => {
-  try {
-    // Get some information to work with
-    const jackPaths = getJackPaths();
+export const isJackDmpRunning = async (): Promise<boolean> =>
+  new Promise<boolean>((resolve, reject) => {
+    try {
+      // Get some information to work with
+      const jackPaths = getJackPaths();
 
-    // jack_lsp will return an error if jack server isn't running
-    const proc = spawnSync(jackPaths.jackLsp);
-    return proc.status === 0;
-  } catch (e) {
-    // logger.error(e.message);
-    return false;
-  }
-};
+      // Search for running processes
+      ps.lookup(
+        { command: jackPaths.jackDmp },
+        (err: Error, resultList: ps.Program[]) => {
+          if (err) reject(err);
+          resolve(resultList.length > 0);
+        }
+      );
+    } catch (e: any) {
+      reject(e.message);
+    }
+  });
 
 /**
  * Starts a Jack Daemon on the host
@@ -92,6 +98,9 @@ export const startJackDmp = (
 
   // Add the samplerate
   cliParams.addParam({ flag: '-r', value: sampleRate.toString() });
+
+  // Specify the number of periods of playback latency.
+  // cliParams.addParam({ flag: '-n', value: sampleRate.toString() });
 
   try {
     // Create the command
@@ -156,13 +165,13 @@ export const startJackDmpAsync = (
         }
 
         // Are we running?
-        const isRunning = isJackDmpRunning();
-
-        // If so, resolve the promise and clear interval
-        if (isRunning) {
-          clearInterval(pollInterval);
-          resolve(runningCommand);
-        }
+        isJackDmpRunning().then((isRunning) => {
+          // If so, resolve the promise and clear interval
+          if (isRunning) {
+            clearInterval(pollInterval);
+            resolve(runningCommand);
+          }
+        });
       }, pollIntervalTime);
     } catch (e) {
       reject(e);
