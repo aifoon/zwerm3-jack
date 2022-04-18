@@ -19,12 +19,9 @@ export const isJacktripRunning = (
 ): Promise<boolean> =>
   new Promise<boolean>((resolve, reject) => {
     try {
-      // Get some information to work with
-      const jackPaths = getJacktripPaths(jackPathsOptions);
-
       // Search for running processes
       ps.lookup(
-        { command: jackPaths.jackTrip },
+        { command: 'jacktrip' },
         (err: Error, resultList: ps.Program[]) => {
           if (err) reject(err);
           resolve(resultList.length > 0);

@@ -9,6 +9,8 @@ import { startJacktripClientAsync } from './jack/JacktripClient';
 import { getJacktripPaths } from './jack/JacktripPaths';
 import { killAllProcesses } from './jack/Kill';
 
+jest.setTimeout(60000);
+
 describe('Paths', () => {
   test('Testing Jack paths', () => {
     const jackPaths = getJackPaths();
@@ -27,11 +29,15 @@ describe('Paths', () => {
 });
 
 describe('Jack and Jacktrip', () => {
-  test('Running Jack and Jacktrip', async () => {
-    // jest.setTimeout(10000);
-    // kill all possible jack and jacktrip processes
+  beforeEach(async () => {
     await killAllProcesses();
+  });
 
+  afterAll(async () => {
+    await killAllProcesses();
+  });
+
+  test('Running Jack and Jacktrip', async () => {
     // start jack
     await startJackDmpAsync(
       {
@@ -54,6 +60,4 @@ describe('Jack and Jacktrip', () => {
     expect(jackIsRunning).toBeTruthy();
     expect(jacktripIsRunning).toBeTruthy();
   });
-
-  afterAll(() => killAllProcesses());
 });

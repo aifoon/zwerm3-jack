@@ -49,12 +49,9 @@ const getDeviceParams = (): CLIParams => {
 export const isJackDmpRunning = async (): Promise<boolean> =>
   new Promise<boolean>((resolve, reject) => {
     try {
-      // Get some information to work with
-      const jackPaths = getJackPaths();
-
       // Search for running processes
       ps.lookup(
-        { command: jackPaths.jackDmp },
+        { command: 'jackd' },
         (err: Error, resultList: ps.Program[]) => {
           if (err) reject(err);
           resolve(resultList.length > 0);
