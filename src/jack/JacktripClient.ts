@@ -169,15 +169,13 @@ export const startJacktripClientAsync = (
         }
 
         // Are we running?
-        const isRunning = await isJacktripRunning({
-          jacktripVersion: softwareVersion,
+        isJacktripRunning().then((isRunning) => {
+          // If so, resolve the promise and clear interval
+          if (isRunning) {
+            clearInterval(pollInterval);
+            resolve(runningCommand);
+          }
         });
-
-        // If so, resolve the promise and clear interval
-        if (isRunning) {
-          clearInterval(pollInterval);
-          resolve(runningCommand);
-        }
       }, pollIntervalTime);
     } catch (e) {
       reject(e);
