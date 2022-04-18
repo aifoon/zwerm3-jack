@@ -9,8 +9,8 @@
     "prepare": "npm run build",
     "clean": "rimraf dist/",
     "copy-resources": "cp -r src/resources dist/",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
+    "test": "node node_modules/jest/bin/jest.js",
+    "test:watch": "node node_modules/jest/bin/jest.js --watch"
   },
   "repository": {
     "type": "git",

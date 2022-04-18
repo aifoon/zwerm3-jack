@@ -28,6 +28,7 @@ describe('Paths', () => {
 
 describe('Jack and Jacktrip', () => {
   test('Running Jack and Jacktrip', async () => {
+    // jest.setTimeout(10000);
     // kill all possible jack and jacktrip processes
     await killAllProcesses();
 
@@ -49,11 +50,10 @@ describe('Jack and Jacktrip', () => {
     const jackIsRunning = await isJackDmpRunning();
     const jacktripIsRunning = await isJacktripRunning();
 
-    // kill the prcocesses if them are running
-    await killAllProcesses();
-
     // expect jack and jacktrip to be running
     expect(jackIsRunning).toBeTruthy();
     expect(jacktripIsRunning).toBeTruthy();
   });
+
+  afterAll(() => killAllProcesses());
 });
