@@ -46,6 +46,7 @@ export interface JackParams {
   channels?: number;
   sampleRate?: number;
   bufferSize?: number;
+  periods?: number;
 }
 
 export interface RunningCommand {

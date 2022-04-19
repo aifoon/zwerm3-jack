@@ -73,6 +73,7 @@ export const startJackDmp = (
     channels = 2,
     bufferSize = 256,
     sampleRate = 48000,
+    periods = 2,
   }: JackParams,
   { onLog }: OptionalParams
 ): RunningCommand => {
@@ -97,7 +98,7 @@ export const startJackDmp = (
   cliParams.addParam({ flag: '-r', value: sampleRate.toString() });
 
   // Specify the number of periods of playback latency.
-  // cliParams.addParam({ flag: '-n', value: sampleRate.toString() });
+  cliParams.addParam({ flag: '-n', value: periods.toString() });
 
   try {
     // Create the command

@@ -45,6 +45,7 @@ describe('Jack and Jacktrip', () => {
         channels: 2,
         bufferSize: 256,
         sampleRate: 48000,
+        periods: 2,
       },
       {}
     );
