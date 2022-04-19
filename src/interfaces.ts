@@ -24,12 +24,11 @@ export interface JacktripPathsOptions {
 }
 
 export interface JacktripParams {
-  bitRate?: BitRate;
   channels?: number;
   debug?: boolean;
   hub?: boolean;
   queueBuffer?: number;
-  redundancy?: number;
+  realtimePriority?: boolean;
 }
 
 export interface JacktripServerParams extends JacktripParams {
@@ -37,8 +36,12 @@ export interface JacktripServerParams extends JacktripParams {
 }
 
 export interface JacktripClientParams extends JacktripParams {
+  bitRate?: BitRate;
   clientName?: string;
   host?: string;
+  receiveChannels?: number;
+  redundancy?: number;
+  sendChannels?: number;
 }
 
 export interface JackParams {

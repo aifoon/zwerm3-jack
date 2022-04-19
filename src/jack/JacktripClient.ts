@@ -38,6 +38,9 @@ export const startJacktripClient = (
     queueBuffer = 4,
     bitRate = BitRate.Sixteen,
     redundancy = 1,
+    sendChannels = 2,
+    receiveChannels = 2,
+    realtimePriority = true,
   }: JacktripClientParams,
   { onLog, softwareVersion = JACKTRIP_DEFAULT_VERSION }: OptionalParams
 ): RunningCommand => {
@@ -91,16 +94,41 @@ export const startJacktripClient = (
     value: clientName,
   });
 
+  // Sets the client name
+  cliParams.addParam({
+    flag: '-J',
+    value: clientName,
+  });
+
   // Sets the remote name (is the clientname)
   cliParams.addParam({
     flag: '-K',
     value: clientName,
   });
 
+  // Sets the receive channels
+  cliParams.addParam({
+    flag: '--receivechannels',
+    value: receiveChannels.toString(),
+  });
+
+  // Sets the send channels
+  cliParams.addParam({
+    flag: '--sendchannels',
+    value: sendChannels.toString(),
+  });
+
   // Sets debug mode
   if (debug) {
     cliParams.addParam({
       flag: '-V',
+    });
+  }
+
+  // Enable realtime priority
+  if (realtimePriority) {
+    cliParams.addParam({
+      flag: '--udprt',
     });
   }
 

@@ -3,7 +3,7 @@
  */
 
 import { spawn } from 'child_process';
-import { BitRate, HubPatchMode } from '../enums';
+import { HubPatchMode } from '../enums';
 import {
   JacktripServerParams,
   RunningCommand,
@@ -32,8 +32,7 @@ export const startJacktripServer = (
     channels = 2,
     queueBuffer = 4,
     debug = false,
-    bitRate = BitRate.Sixteen,
-    redundancy = 1,
+    realtimePriority = true,
   }: JacktripServerParams,
   { onLog, softwareVersion = JACKTRIP_DEFAULT_VERSION }: OptionalParams
 ): RunningCommand => {
@@ -67,27 +66,22 @@ export const startJacktripServer = (
     value: queueBuffer.toString(),
   });
 
-  // The bitrate (defaults 16)
-  cliParams.addParam({
-    flag: '-b',
-    value: bitRate.toString(),
-  });
-
   // Wavetable repeat last packet instead of muting with zeroes if network packet droput happens
   cliParams.addParam({
     flag: '-z',
-  });
-
-  // Packet Redundancy to avoid glitches with packet losses (defaults 1)
-  cliParams.addParam({
-    flag: '-r',
-    value: redundancy.toString(),
   });
 
   // Sets debug mode
   if (debug) {
     cliParams.addParam({
       flag: '-V',
+    });
+  }
+
+  // Enable realtime priority for networking threads
+  if (realtimePriority) {
+    cliParams.addParam({
+      flag: '--udprt',
     });
   }
 
