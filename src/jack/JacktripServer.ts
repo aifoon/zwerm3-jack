@@ -55,10 +55,12 @@ export const startJacktripServer = (
   });
 
   // Define the amount of channels (defaults 2)
-  cliParams.addParam({
-    flag: '-n',
-    value: channels.toString(),
-  });
+  if (channels !== -1) {
+    cliParams.addParam({
+      flag: '-n',
+      value: channels.toString(),
+    });
+  }
 
   // Number of packets of input queue (defaults 4)
   cliParams.addParam({

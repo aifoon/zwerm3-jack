@@ -46,7 +46,8 @@ export interface JacktripClientParams extends JacktripParams {
 
 export interface JackParams {
   device?: string;
-  channels?: number;
+  inputChannels?: number;
+  outputChannels?: number;
   sampleRate?: number;
   bufferSize?: number;
   periods?: number;

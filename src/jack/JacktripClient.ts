@@ -60,10 +60,12 @@ export const startJacktripClient = (
   });
 
   // Define the amount of channels (defaults 2)
-  cliParams.addParam({
-    flag: '-n',
-    value: channels.toString(),
-  });
+  if (channels !== -1) {
+    cliParams.addParam({
+      flag: '-n',
+      value: channels.toString(),
+    });
+  }
 
   // Wavetable repeat last packet instead of muting with zeroes if network packet droput happens
   cliParams.addParam({

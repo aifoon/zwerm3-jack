@@ -44,8 +44,9 @@ describe('Jack and Jacktrip', () => {
     await startJackDmpAsync(
       {
         device: '',
-        channels: 2,
-        bufferSize: 256,
+        inputChannels: 2,
+        outputChannels: 2,
+        bufferSize: 1024,
         sampleRate: 48000,
         periods: 2,
       },

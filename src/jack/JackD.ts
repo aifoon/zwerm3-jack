@@ -65,7 +65,8 @@ export const isJackDmpRunning = async (): Promise<boolean> =>
 export const startJackDmp = (
   {
     device = '',
-    channels = 2,
+    outputChannels = 2,
+    inputChannels = 2,
     bufferSize = 256,
     sampleRate = 48000,
     periods = 2,
@@ -84,7 +85,12 @@ export const startJackDmp = (
   if (device) cliParams.addParam({ flag: '-d', value: device.toString() });
 
   // Add the output channels
-  cliParams.addParam({ flag: '-o', value: channels.toString() });
+  if (outputChannels !== -1)
+    cliParams.addParam({ flag: '-o', value: outputChannels.toString() });
+
+  // Add the input channels
+  if (inputChannels !== -1)
+    cliParams.addParam({ flag: '-i', value: inputChannels.toString() });
 
   // Add the buffersize
   cliParams.addParam({ flag: '-p', value: bufferSize.toString() });
@@ -93,7 +99,8 @@ export const startJackDmp = (
   cliParams.addParam({ flag: '-r', value: sampleRate.toString() });
 
   // Specify the number of periods of playback latency.
-  cliParams.addParam({ flag: '-n', value: periods.toString() });
+  if (periods !== -1)
+    cliParams.addParam({ flag: '-n', value: periods.toString() });
 
   try {
     // Create the command
