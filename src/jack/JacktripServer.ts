@@ -45,7 +45,7 @@ export const startJacktripServer = (
   const cliParams = new CLIParams();
 
   // Hub mode or not?
-  cliParams.addParam({ flag: hub ? '-S' : 's' });
+  cliParams.addParam({ flag: hub ? '-S' : '-s' });
 
   // Define the hubPatchMode
   // more info: https://ccrma.stanford.edu/docs/common/IETF.html#hub-patching

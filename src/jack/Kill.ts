@@ -4,17 +4,28 @@
 
 import { spawnSync } from 'child_process';
 import * as ps from 'ps-node';
+import find from 'find-process';
 
 /**
  * Get a process by command
  * @param command the running command
  * @returns
  */
-const getRunningProcesses = (command: string): Promise<ps.Program[]> =>
-  new Promise((resolve, reject) => {
-    ps.lookup({ command }, (err, resultList) => {
-      if (err) reject(err);
-      resolve(resultList);
+const getRunningProcesses = (
+  command: string
+): Promise<
+  {
+    pid: number;
+    ppid?: number | undefined;
+    uid?: number | undefined;
+    gid?: number | undefined;
+    name: string;
+    cmd: string;
+  }[]
+> =>
+  new Promise((resolve) => {
+    find('name', command, true).then((list: any) => {
+      resolve(list);
     });
   });
 

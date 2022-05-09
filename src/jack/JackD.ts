@@ -2,8 +2,8 @@
  * Logic to manage the Jack Daemon
  */
 
-import * as ps from 'ps-node';
 import { spawn } from 'child_process';
+import find from 'find-process';
 import { JackParams, RunningCommand, OptionalParams } from '../interfaces';
 import { CLIParams } from '../CLIParams';
 import {
@@ -49,14 +49,9 @@ const getDeviceParams = (): CLIParams => {
 export const isJackDmpRunning = async (): Promise<boolean> =>
   new Promise<boolean>((resolve, reject) => {
     try {
-      // Search for running processes
-      ps.lookup(
-        { command: 'jackd' },
-        (err: Error, resultList: ps.Program[]) => {
-          if (err) reject(err);
-          resolve(resultList.length > 0);
-        }
-      );
+      find('name', 'jackd', true).then((list: any) => {
+        resolve(list.length > 0);
+      });
     } catch (e: any) {
       reject(e.message);
     }
@@ -151,7 +146,6 @@ export const startJackDmpAsync = (
       // Start polling and check if Daemon is running via Jack LSP
       const pollInterval = setInterval(() => {
         currentPoll += 1;
-
         // If max polls are reached, clear the interval and reject the promise
         if (currentPoll > maxPolls) {
           clearInterval(pollInterval);

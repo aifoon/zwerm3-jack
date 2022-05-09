@@ -38,6 +38,8 @@ describe('Jack and Jacktrip', () => {
   });
 
   test('Running Jack and Jacktrip', async () => {
+    await killAllProcesses();
+
     // start jack
     await startJackDmpAsync(
       {
