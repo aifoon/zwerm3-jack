@@ -49,7 +49,7 @@ const getDeviceParams = (): CLIParams => {
 export const isJackDmpRunning = async (): Promise<boolean> =>
   new Promise<boolean>((resolve, reject) => {
     try {
-      find('name', 'jackd', true).then((list: any) => {
+      find('name', 'jackd', false).then((list: any) => {
         resolve(list.length > 0);
       });
     } catch (e: any) {

@@ -12,7 +12,7 @@ import find from 'find-process';
 export const isJacktripRunning = (): Promise<boolean> =>
   new Promise<boolean>((resolve, reject) => {
     try {
-      find('name', 'jacktrip', true).then((list: any) => {
+      find('name', 'jacktrip', false).then((list: any) => {
         resolve(list.length > 0);
       });
     } catch (e: any) {
