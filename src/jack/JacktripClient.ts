@@ -21,6 +21,7 @@ import { RequestTimedOutException } from '../exceptions/RequestTimedOutException
 import {
   JACKTRIP_DEFAULT_CLIENT_NAME,
   JACKTRIP_DEFAULT_VERSION,
+  TIMEOUT_AFTER_RUNNING_PROCESS,
 } from '../consts';
 
 /**
@@ -203,7 +204,10 @@ export const startJacktripClientAsync = (
           // If so, resolve the promise and clear interval
           if (isRunning) {
             clearInterval(pollInterval);
-            resolve(runningCommand);
+            setTimeout(
+              () => resolve(runningCommand),
+              TIMEOUT_AFTER_RUNNING_PROCESS
+            );
           }
         });
       }, pollIntervalTime);

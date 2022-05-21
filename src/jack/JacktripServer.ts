@@ -18,7 +18,10 @@ import {
   RequestTimedOutException,
 } from '../exceptions';
 import { validateHubPatchMode } from '../validators';
-import { JACKTRIP_DEFAULT_VERSION } from '../consts';
+import {
+  JACKTRIP_DEFAULT_VERSION,
+  TIMEOUT_AFTER_RUNNING_PROCESS,
+} from '../consts';
 
 /**
  * Starting the Jacktrip Server
@@ -156,7 +159,10 @@ export const startJacktripServerAsync = (
           // If so, resolve the promise and clear interval
           if (isRunning) {
             clearInterval(pollInterval);
-            resolve(runningCommand);
+            setTimeout(
+              () => resolve(runningCommand),
+              TIMEOUT_AFTER_RUNNING_PROCESS
+            );
           }
         });
       }, pollIntervalTime);

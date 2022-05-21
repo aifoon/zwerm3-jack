@@ -14,6 +14,7 @@ import { getJackPaths } from './JackPaths';
 import { validateBufferSize, validateSampleRate } from '../validators';
 import { StartJackDmpFailedException } from '../exceptions/StartJackDmpFailedException';
 import { RequestTimedOutException } from '../exceptions/RequestTimedOutException';
+import { TIMEOUT_AFTER_RUNNING_PROCESS } from '../consts';
 
 /**
  * Returns the device parameters for jack to start, OS specific
@@ -168,7 +169,10 @@ export const startJackDmpAsync = (
           // If so, resolve the promise and clear interval
           if (isRunning) {
             clearInterval(pollInterval);
-            resolve(runningCommand);
+            setTimeout(
+              () => resolve(runningCommand),
+              TIMEOUT_AFTER_RUNNING_PROCESS
+            );
           }
         });
       }, pollIntervalTime);
