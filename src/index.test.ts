@@ -5,7 +5,7 @@
 import { getJackPaths } from '.';
 import { isJackDmpRunning, startJackDmpAsync } from './jack/JackD';
 import { isJacktripRunning } from './jack/Jacktrip';
-import { startJacktripClientAsync } from './jack/JacktripClient';
+import { startJacktripHubServerAsync } from './jack/JacktripHubServer';
 import { getJacktripPaths } from './jack/JacktripPaths';
 import { killAllProcesses } from './jack/Kill';
 
@@ -53,8 +53,8 @@ describe('Jack and Jacktrip', () => {
       {}
     );
 
-    // start jakcktrip
-    await startJacktripClientAsync({}, {});
+    // start jacktrip
+    await startJacktripHubServerAsync({}, {});
 
     // check if jack and jacktrip are running
     const jackIsRunning = await isJackDmpRunning();

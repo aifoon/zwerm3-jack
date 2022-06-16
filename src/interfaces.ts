@@ -19,29 +19,39 @@ export interface JackPathsOptions {
   jackVersion: string;
 }
 
-export interface JacktripPathsOptions {
-  jacktripVersion: string;
-}
-
 export interface JacktripParams {
   channels?: number;
   debug?: boolean;
-  hub?: boolean;
   queueBuffer?: number;
   realtimePriority?: boolean;
+  localPort?: number;
 }
 
-export interface JacktripServerParams extends JacktripParams {
+export interface JacktripHubServerParams extends JacktripParams {
   hubPatchMode?: HubPatchMode;
 }
 
-export interface JacktripClientParams extends JacktripParams {
+export interface JacktripHubClientParams extends JacktripParams {
   bitRate?: BitRate;
   clientName?: string;
   host?: string;
   receiveChannels?: number;
   redundancy?: number;
   sendChannels?: number;
+  remotePort?: number;
+}
+
+export interface JacktripP2PServerParams extends JacktripParams {
+  bitRate?: BitRate;
+  clientName?: string;
+  receiveChannels?: number;
+  redundancy?: number;
+  sendChannels?: number;
+}
+
+export interface JacktripP2PClientParams extends JacktripP2PServerParams {
+  host?: string;
+  remotePort?: number;
 }
 
 export interface JackParams {
@@ -74,5 +84,4 @@ export interface Config {
 export interface OptionalParams {
   // eslint-disable-next-line no-unused-vars
   onLog?: (message: string) => void;
-  softwareVersion?: string;
 }

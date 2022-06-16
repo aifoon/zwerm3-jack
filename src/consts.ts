@@ -5,7 +5,6 @@
 import * as path from 'path';
 
 const JACKTRIP_DEFAULT_CLIENT_NAME = 'client';
-const JACKTRIP_DEFAULT_VERSION = '1.5.3';
 const JACK_DEFAULT_VERSION = '1.9.19';
 const JACKTRIP_BIN_PATH = path.join(__dirname, 'resources/jacktrip/');
 const JACK_BASE_PATH_WIN = 'C:\\Program Files (x86)\\Jack\\';
@@ -19,7 +18,6 @@ const TIMEOUT_AFTER_RUNNING_PROCESS = 2000;
 
 export {
   JACKTRIP_DEFAULT_CLIENT_NAME,
-  JACKTRIP_DEFAULT_VERSION,
   JACKTRIP_BIN_PATH,
   JACK_DEFAULT_VERSION,
   JACK_BASE_PATH_DARWIN,

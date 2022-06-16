@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * A File With all Fixed enum data
  */
@@ -19,4 +20,14 @@ export enum HubPatchMode {
   ReservedForTUB = 3,
   FullMix = 4,
   NoConnections = 5,
+}
+
+/**
+ * Define the different Jacktrip types
+ */
+export enum StartJacktripType {
+  HubServer,
+  HubClient,
+  P2PServer,
+  P2PClient,
 }

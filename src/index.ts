@@ -3,13 +3,13 @@
  */
 
 import {
-  startJacktripServer,
-  startJacktripServerAsync,
-} from './jack/JacktripServer';
+  startJacktripHubServer,
+  startJacktripHubServerAsync,
+} from './jack/JacktripHubServer';
 import {
-  startJacktripClient,
-  startJacktripClientAsync,
-} from './jack/JacktripClient';
+  startJacktripHubClient,
+  startJacktripHubClientAsync,
+} from './jack/JacktripHubClient';
 import { killJack, killJacktrip, killAllProcesses } from './jack/Kill';
 import { getJackPaths } from './jack/JackPaths';
 import { getJacktripPaths } from './jack/JacktripPaths';
@@ -37,10 +37,10 @@ export {
   killJack,
   startJackDmp,
   startJackDmpAsync,
-  startJacktripServer,
-  startJacktripServerAsync,
-  startJacktripClient,
-  startJacktripClientAsync,
+  startJacktripHubServer,
+  startJacktripHubServerAsync,
+  startJacktripHubClient,
+  startJacktripHubClientAsync,
   Zwerm3JackTypes,
   Zwerm3JackEnums,
 };

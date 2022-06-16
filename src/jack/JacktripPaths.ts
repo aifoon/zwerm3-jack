@@ -3,51 +3,32 @@
  */
 
 import * as path from 'path';
-import * as os from 'os';
-import * as semver from 'semver';
-import { JACKTRIP_BIN_PATH, JACKTRIP_DEFAULT_VERSION } from '../consts';
-import { JacktripPaths, JacktripPathsOptions } from '../interfaces';
+import { JACKTRIP_BIN_PATH } from '../consts';
+import { JacktripPaths } from '../interfaces';
 
 /**
  * This will return the Windows Paths for the Jacktrip instance
  * @returns The Windows JackPaths
  */
-const jacktripWinPaths = ({
-  jacktripVersion = JACKTRIP_DEFAULT_VERSION,
-}: JacktripPathsOptions): JacktripPaths => ({
-  jackTrip: path.join(
-    JACKTRIP_BIN_PATH,
-    jacktripVersion,
-    'win32',
-    'jacktrip.exe'
-  ),
+const jacktripWinPaths = (): JacktripPaths => ({
+  jackTrip: path.join(JACKTRIP_BIN_PATH, 'win32', 'jacktrip.exe'),
 });
 
 /**
  * This will return the Darwin Paths for the Jacktrip instance (OSX)
  * @returns The OSX JacktripPaths
  */
-const jacktripDarwinPaths = ({
-  jacktripVersion = JACKTRIP_DEFAULT_VERSION,
-}: JacktripPathsOptions): JacktripPaths => ({
-  jackTrip: path.join(
-    JACKTRIP_BIN_PATH,
-    `/${jacktripVersion}/darwin/${
-      semver.gte(os.release(), '15.0.0') ? 'jacktrip' : 'jacktrip_1.1'
-    }`
-  ),
+const jacktripDarwinPaths = (): JacktripPaths => ({
+  jackTrip: path.join(JACKTRIP_BIN_PATH, 'darwin', 'jacktrip'),
 });
 
 /**
  * This will return the Linux Paths for the Jacktrip instance (Linux)
  * @returns The Linux JacktripPaths
  */
-const jacktripLinuxPaths = ({
-  jacktripVersion = JACKTRIP_DEFAULT_VERSION,
-}: JacktripPathsOptions): JacktripPaths => ({
+const jacktripLinuxPaths = (): JacktripPaths => ({
   jackTrip: path.join(
     JACKTRIP_BIN_PATH,
-    jacktripVersion,
     'linux',
     process.arch === 'arm' ? 'arm' : 'x64',
     'jacktrip'
@@ -58,17 +39,13 @@ const jacktripLinuxPaths = ({
  * Based on the OS you use this function, you will get the JacktripPaths
  * @returns The OS bases Jacktrip paths
  */
-export const getJacktripPaths = (
-  jackPathsOptions: JacktripPathsOptions = {
-    jacktripVersion: JACKTRIP_DEFAULT_VERSION,
-  }
-): JacktripPaths => {
+export const getJacktripPaths = (): JacktripPaths => {
   switch (process.platform) {
     case 'win32':
-      return jacktripWinPaths(jackPathsOptions);
+      return jacktripWinPaths();
     case 'darwin':
-      return jacktripDarwinPaths(jackPathsOptions);
+      return jacktripDarwinPaths();
     default:
-      return jacktripLinuxPaths(jackPathsOptions);
+      return jacktripLinuxPaths();
   }
 };
