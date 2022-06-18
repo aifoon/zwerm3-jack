@@ -1,55 +1,54 @@
 /**
- * This contains all the fun stuff to start a Jacktrip server
+ * This contains all the fun stuff to start a Jacktrip client
  */
 
 import { spawn } from 'child_process';
-import { HubPatchMode, StartJacktripType } from '../enums';
+import { BitRate, StartJacktripType } from '../enums';
 import {
-  JacktripHubServerParams,
   RunningCommand,
   OptionalParams,
+  JacktripP2PServerParams,
 } from '../interfaces';
 import { getJacktripPaths } from './JacktripPaths';
-import { startJacktripAsync } from './JacktripAsync';
 import { CLIParams } from '../CLIParams';
 import {
-  HubPatchModeNotValidException,
+  BitRateNotValidException,
   StartJacktripFailedException,
 } from '../exceptions';
-import { validateHubPatchMode } from '../validators';
+import { validateBitRate } from '../validators';
+import { JACKTRIP_DEFAULT_CLIENT_NAME } from '../consts';
+import { startJacktripAsync } from './JacktripAsync';
 
 /**
- * Starting the Jacktrip Hub Server
- * @param param0 JacktripHubServerParams
+ * Start a JackTrip P2P Server
+ * @param param0 JacktripP2PServerParams
  * @returns RunningCommand
  */
-export const startJacktripHubServer = (
+export const startJacktripP2PServer = (
   {
-    hubPatchMode = HubPatchMode.NoConnections,
+    clientName = JACKTRIP_DEFAULT_CLIENT_NAME,
     channels = 2,
-    queueBuffer = 4,
     debug = false,
+    queueBuffer = 4,
+    bitRate = BitRate.Sixteen,
+    redundancy = 1,
+    sendChannels = 2,
+    receiveChannels = 2,
     realtimePriority = true,
     localPort = 4464,
-  }: JacktripHubServerParams,
+  }: JacktripP2PServerParams,
   { onLog }: OptionalParams
 ): RunningCommand => {
-  // Do some validate
-  if (!validateHubPatchMode(hubPatchMode))
-    throw new HubPatchModeNotValidException();
+  // Do some validation
+  if (!validateBitRate(bitRate)) throw new BitRateNotValidException();
 
-  // Get some inforamtion to work with
+  // Get some information to work with
   const jacktripPaths = getJacktripPaths();
   const cliParams = new CLIParams();
 
-  // Set to Hub server mode
-  cliParams.addParam({ flag: '-S' });
-
-  // Define the hubPatchMode
-  // more info: https://ccrma.stanford.edu/docs/common/IETF.html#hub-patching
+  // Hub client mode
   cliParams.addParam({
-    flag: '-p',
-    value: hubPatchMode.toString(),
+    flag: '-s',
   });
 
   // Define the amount of channels (defaults 2)
@@ -60,21 +59,51 @@ export const startJacktripHubServer = (
     });
   }
 
+  // Wavetable repeat last packet instead of muting with zeroes if network packet droput happens
+  cliParams.addParam({
+    flag: '-z',
+  });
+
   // Number of packets of input queue (defaults 4)
   cliParams.addParam({
     flag: '-q',
     value: queueBuffer.toString(),
   });
 
-  // Set the local port
+  // The bitrate (defaults 16)
+  cliParams.addParam({
+    flag: '-b',
+    value: bitRate.toString(),
+  });
+
+  // Packet Redundancy to avoid glitches with packet losses (defaults 1)
+  cliParams.addParam({
+    flag: '-r',
+    value: redundancy.toString(),
+  });
+
+  // Define the client's name
+  cliParams.addParam({
+    flag: '-J',
+    value: clientName,
+  });
+
+  // Sets the local port
   cliParams.addParam({
     flag: '-B',
     value: localPort.toString(),
   });
 
-  // Wavetable repeat last packet instead of muting with zeroes if network packet droput happens
+  // Sets the receive channels
   cliParams.addParam({
-    flag: '-z',
+    flag: '--receivechannels',
+    value: receiveChannels.toString(),
+  });
+
+  // Sets the send channels
+  cliParams.addParam({
+    flag: '--sendchannels',
+    value: sendChannels.toString(),
   });
 
   // Sets debug mode
@@ -84,7 +113,7 @@ export const startJacktripHubServer = (
     });
   }
 
-  // Enable realtime priority for networking threads
+  // Enable realtime priority
   if (realtimePriority) {
     cliParams.addParam({
       flag: '--udprt',
@@ -120,16 +149,16 @@ export const startJacktripHubServer = (
 };
 
 /**
- * Starts a a Jacktrip Hub Server and waits until the server is fully started.
- * @param param0 JackParams channels, bufferSize & sampleRate
+ * Starts a Jacktrip P2P Server and waits until the server is fully started.
+ * @param param0 JacktripClientParams
  * @returns Promise<RunningCommand>
  */
-export const startJacktripHubServerAsync = (
-  jacktripHubServerParams: JacktripHubServerParams,
+export const startJacktripHubClientAsync = (
+  jacktripP2PServerParams: JacktripP2PServerParams,
   optionalParams: OptionalParams
 ): Promise<RunningCommand> =>
   startJacktripAsync(
-    jacktripHubServerParams,
-    StartJacktripType.HubServer,
+    jacktripP2PServerParams,
+    StartJacktripType.P2PServer,
     optionalParams
   );

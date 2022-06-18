@@ -20,8 +20,8 @@ import { JACKTRIP_DEFAULT_CLIENT_NAME } from '../consts';
 import { startJacktripAsync } from './JacktripAsync';
 
 /**
- * Start a JackTrip Client
- * @param param0 JackTripClientParams
+ * Start a JackTrip Hub Client
+ * @param param0 JacktripHubClientParams
  * @returns RunningCommand
  */
 export const startJacktripHubClient = (
@@ -86,12 +86,6 @@ export const startJacktripHubClient = (
   });
 
   // Define the client's name
-  cliParams.addParam({
-    flag: '-J',
-    value: clientName,
-  });
-
-  // Sets the client name
   cliParams.addParam({
     flag: '-J',
     value: clientName,
@@ -170,16 +164,16 @@ export const startJacktripHubClient = (
 };
 
 /**
- * Starts a a Jacktrip Client and waits until the server is fully started.
+ * Starts a Jacktrip Hub Client and waits until the server is fully started.
  * @param param0 JacktripClientParams
  * @returns Promise<RunningCommand>
  */
 export const startJacktripHubClientAsync = (
-  jacktripClientParams: JacktripHubClientParams,
+  jacktripHubClientParams: JacktripHubClientParams,
   optionalParams: OptionalParams
 ): Promise<RunningCommand> =>
   startJacktripAsync(
-    jacktripClientParams,
+    jacktripHubClientParams,
     StartJacktripType.HubClient,
     optionalParams
   );

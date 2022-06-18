@@ -3,6 +3,8 @@ import {
   RunningCommand,
   OptionalParams,
   JacktripHubClientParams,
+  JacktripP2PClientParams,
+  JacktripP2PServerParams,
 } from '../interfaces';
 import { StartJacktripType } from '../enums';
 import { isJacktripRunning } from './Jacktrip';
@@ -10,13 +12,18 @@ import { startJacktripHubClient } from './JacktripHubClient';
 import { startJacktripHubServer } from './JacktripHubServer';
 import { RequestTimedOutException } from '../exceptions';
 import { TIMEOUT_AFTER_RUNNING_PROCESS } from '../consts';
+import { startJacktripP2PServer } from './JacktripP2PServer';
 
 /**
  * Starts a a Jacktrip instance and waits until the instance is fully started.
  * @returns Promise<RunningCommand>
  */
 export const startJacktripAsync = (
-  jacktripParams: JacktripHubServerParams | JacktripHubClientParams,
+  jacktripParams:
+    | JacktripHubServerParams
+    | JacktripHubClientParams
+    | JacktripP2PClientParams
+    | JacktripP2PServerParams,
   startJacktripType: StartJacktripType,
   optionalParams: OptionalParams
 ): Promise<RunningCommand> =>
@@ -39,6 +46,12 @@ export const startJacktripAsync = (
           break;
         case StartJacktripType.HubClient:
           runningCommand = startJacktripHubClient(
+            jacktripParams,
+            optionalParams
+          );
+          break;
+        case StartJacktripType.P2PServer:
+          runningCommand = startJacktripP2PServer(
             jacktripParams,
             optionalParams
           );
