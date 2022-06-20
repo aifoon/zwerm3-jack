@@ -63,6 +63,11 @@ export interface JackParams {
   periods?: number;
 }
 
+export interface JacktripP2PClient {
+  localPort: number;
+  clientName: string;
+}
+
 export interface RunningCommand {
   command: string;
   pid: number | undefined;

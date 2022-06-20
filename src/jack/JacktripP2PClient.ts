@@ -8,6 +8,7 @@ import {
   RunningCommand,
   OptionalParams,
   JacktripP2PClientParams,
+  JacktripP2PClient,
 } from '../interfaces';
 import { getJacktripPaths } from './JacktripPaths';
 import { CLIParams } from '../CLIParams';
@@ -186,18 +187,22 @@ export const startJacktripP2PClientAsync = (
  * @returns
  */
 export const startJacktriptP2PMultipleClientsAsync = async (
-  jacktripP2PClientParams: Omit<JacktripP2PClientParams, 'localPort'>,
-  localPorts: number[]
+  jacktripP2PClientParams: Omit<
+    JacktripP2PClientParams,
+    'localPort' | 'clientName'
+  >,
+  clients: JacktripP2PClient[]
 ): Promise<RunningCommand[]> => {
   // validate
-  if (!localPorts || localPorts.length === 0) return [];
+  if (!clients || clients.length === 0) return [];
 
   // create a list of promises
   const startJacktripP2PClientAsyncParams: JacktripP2PClientParams[] =
-    localPorts.map(
-      (localPort): JacktripP2PClientParams => ({
+    clients.map(
+      ({ localPort, clientName }): JacktripP2PClientParams => ({
         ...jacktripP2PClientParams,
         localPort,
+        clientName,
       })
     );
 
