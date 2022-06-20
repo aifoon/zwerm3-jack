@@ -80,10 +80,11 @@ describe('Jack and Jacktrip', () => {
     );
 
     // start jacktrip
-    const runningCommands = await startJacktriptP2PMultipleClientsAsync(
-      {},
-      [4465, 4466, 4467]
-    );
+    const runningCommands = await startJacktriptP2PMultipleClientsAsync({}, [
+      { localPort: 4465, clientName: 'Client1' },
+      { localPort: 4466, clientName: 'Client2' },
+      { localPort: 4467, clientName: 'Client3' },
+    ]);
 
     // get running commands
     const runningJacktripProcesses = await getRunningProcesses('jacktrip');
