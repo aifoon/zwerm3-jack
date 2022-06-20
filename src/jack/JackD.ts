@@ -64,16 +64,19 @@ export const isJackDmpRunning = async (): Promise<boolean> =>
  * @returns RunningCommand
  */
 export const startJackDmp = (
-  {
+  jackParams: JackParams,
+  { onLog }: OptionalParams
+): RunningCommand => {
+  // Destructure the variables
+  const {
     device = '',
     outputChannels = 2,
     inputChannels = 2,
     bufferSize = 256,
     sampleRate = 48000,
     periods = 2,
-  }: JackParams,
-  { onLog }: OptionalParams
-): RunningCommand => {
+  } = jackParams;
+
   // Do some validation
   if (!validateBufferSize(bufferSize)) throw new BufferSizeNotValidException();
   if (!validateSampleRate(sampleRate)) throw new SampleRateNotValidException();
@@ -125,7 +128,11 @@ export const startJackDmp = (
     });
 
     // Return the command
-    return { command: runningCommand.command };
+    return {
+      command: runningCommand.command,
+      pid: runningCommand.process.pid,
+      params: jackParams,
+    };
   } catch (e: any) {
     throw new StartJackDmpFailedException(e.message);
   }

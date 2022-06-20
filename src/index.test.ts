@@ -6,8 +6,13 @@ import { getJackPaths } from '.';
 import { isJackDmpRunning, startJackDmpAsync } from './jack/JackD';
 import { isJacktripRunning } from './jack/Jacktrip';
 import { startJacktripP2PServer } from './jack/JacktripP2PServer';
+import { startJacktriptP2PMultipleClientsAsync } from './jack/JacktripP2PClient';
 import { getJacktripPaths } from './jack/JacktripPaths';
-import { killAllProcesses } from './jack/Kill';
+import {
+  getRunningProcesses,
+  killAllProcesses,
+  killProcessByPid,
+} from './jack/Kill';
 
 jest.setTimeout(60000);
 
@@ -28,6 +33,27 @@ describe('Paths', () => {
   });
 });
 
+describe('Killing', () => {
+  test('Start Jack and Kill by pid', async () => {
+    // start jack
+    const runningCommand = await startJackDmpAsync(
+      {
+        device: '',
+        inputChannels: 2,
+        outputChannels: 2,
+        bufferSize: 1024,
+        sampleRate: 48000,
+        periods: 2,
+      },
+      {}
+    );
+
+    await killProcessByPid(runningCommand.pid);
+    const jackIsRunning = await isJackDmpRunning();
+    expect(jackIsRunning).toBeFalsy();
+  });
+});
+
 describe('Jack and Jacktrip', () => {
   beforeEach(async () => {
     await killAllProcesses();
@@ -35,6 +61,35 @@ describe('Jack and Jacktrip', () => {
 
   afterAll(async () => {
     await killAllProcesses();
+  });
+
+  test('Running Jack and multiple Jacktrip clients', async () => {
+    await killAllProcesses();
+
+    // start jack
+    await startJackDmpAsync(
+      {
+        device: '',
+        inputChannels: 2,
+        outputChannels: 2,
+        bufferSize: 1024,
+        sampleRate: 48000,
+        periods: 2,
+      },
+      {}
+    );
+
+    // start jacktrip
+    const runningCommands = await startJacktriptP2PMultipleClientsAsync(
+      {},
+      [4465, 4466, 4467]
+    );
+
+    // get running commands
+    const runningJacktripProcesses = await getRunningProcesses('jacktrip');
+
+    // check if the amount of started processes are equal than running commands
+    expect(runningJacktripProcesses).toHaveLength(runningCommands.length);
   });
 
   test('Running Jack and Jacktrip', async () => {

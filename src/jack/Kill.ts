@@ -11,7 +11,7 @@ import find from 'find-process';
  * @param command the running command
  * @returns
  */
-const getRunningProcesses = (
+export const getRunningProcesses = (
   command: string
 ): Promise<
   {
@@ -26,6 +26,20 @@ const getRunningProcesses = (
   new Promise((resolve) => {
     find('name', command, true).then((list: any) => {
       resolve(list);
+    });
+  });
+
+/**
+ * Kills a process by process id
+ * @param pid The process id
+ * @returns
+ */
+export const killProcessByPid = (pid: number | undefined) =>
+  new Promise<void>((resolveKill) => {
+    if (!pid) return;
+    // eslint-disable-next-line no-promise-executor-return
+    ps.kill(pid, { signal: 'SIGKILL', timeout: 10 }, () => {
+      resolveKill();
     });
   });
 

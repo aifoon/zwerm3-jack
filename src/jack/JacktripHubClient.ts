@@ -25,7 +25,11 @@ import { startJacktripAsync } from './JacktripAsync';
  * @returns RunningCommand
  */
 export const startJacktripHubClient = (
-  {
+  jacktripHubClientParams: JacktripHubClientParams,
+  { onLog }: OptionalParams
+): RunningCommand => {
+  // Destructure the variables
+  const {
     clientName = JACKTRIP_DEFAULT_CLIENT_NAME,
     host = 'localhost',
     channels = 2,
@@ -38,9 +42,8 @@ export const startJacktripHubClient = (
     realtimePriority = true,
     localPort = 4464,
     remotePort = 4464,
-  }: JacktripHubClientParams,
-  { onLog }: OptionalParams
-): RunningCommand => {
+  } = jacktripHubClientParams;
+
   // Do some validation
   if (!validateBitRate(bitRate)) throw new BitRateNotValidException();
 
@@ -157,7 +160,11 @@ export const startJacktripHubClient = (
     });
 
     // Return the command
-    return { command: runningCommand.command };
+    return {
+      command: runningCommand.command,
+      pid: runningCommand.process.pid,
+      params: jacktripHubClientParams,
+    };
   } catch (e: any) {
     throw new StartJacktripFailedException(e.message);
   }

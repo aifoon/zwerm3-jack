@@ -24,16 +24,19 @@ import { validateHubPatchMode } from '../validators';
  * @returns RunningCommand
  */
 export const startJacktripHubServer = (
-  {
+  jacktripHubServerParams: JacktripHubServerParams,
+  { onLog }: OptionalParams
+): RunningCommand => {
+  // Destructure the variables
+  const {
     hubPatchMode = HubPatchMode.NoConnections,
     channels = 2,
     queueBuffer = 4,
     debug = false,
     realtimePriority = true,
     localPort = 4464,
-  }: JacktripHubServerParams,
-  { onLog }: OptionalParams
-): RunningCommand => {
+  } = jacktripHubServerParams;
+
   // Do some validate
   if (!validateHubPatchMode(hubPatchMode))
     throw new HubPatchModeNotValidException();
@@ -113,7 +116,11 @@ export const startJacktripHubServer = (
     });
 
     // Return the command
-    return { command: runningCommand.command };
+    return {
+      command: runningCommand.command,
+      pid: runningCommand.process.pid,
+      params: jacktripHubServerParams,
+    };
   } catch (e: any) {
     throw new StartJacktripFailedException(e.message);
   }

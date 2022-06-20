@@ -25,7 +25,11 @@ import { startJacktripAsync } from './JacktripAsync';
  * @returns RunningCommand
  */
 export const startJacktripP2PServer = (
-  {
+  jacktripP2PServerParams: JacktripP2PServerParams,
+  { onLog }: OptionalParams
+): RunningCommand => {
+  // Destructure the variables
+  const {
     clientName = JACKTRIP_DEFAULT_CLIENT_NAME,
     channels = 2,
     debug = false,
@@ -36,9 +40,8 @@ export const startJacktripP2PServer = (
     receiveChannels = 2,
     realtimePriority = true,
     localPort = 4464,
-  }: JacktripP2PServerParams,
-  { onLog }: OptionalParams
-): RunningCommand => {
+  } = jacktripP2PServerParams;
+
   // Do some validation
   if (!validateBitRate(bitRate)) throw new BitRateNotValidException();
 
@@ -142,7 +145,11 @@ export const startJacktripP2PServer = (
     });
 
     // Return the command
-    return { command: runningCommand.command };
+    return {
+      command: runningCommand.command,
+      pid: runningCommand.process.pid,
+      params: jacktripP2PServerParams,
+    };
   } catch (e: any) {
     throw new StartJacktripFailedException(e.message);
   }
@@ -153,7 +160,7 @@ export const startJacktripP2PServer = (
  * @param param0 JacktripClientParams
  * @returns Promise<RunningCommand>
  */
-export const startJacktripHubClientAsync = (
+export const startJacktripP2PServerAsync = (
   jacktripP2PServerParams: JacktripP2PServerParams,
   optionalParams: OptionalParams
 ): Promise<RunningCommand> =>

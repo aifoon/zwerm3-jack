@@ -65,6 +65,13 @@ export interface JackParams {
 
 export interface RunningCommand {
   command: string;
+  pid: number | undefined;
+  params:
+    | JacktripP2PClientParams
+    | JacktripP2PServerParams
+    | JacktripHubClientParams
+    | JacktripHubServerParams
+    | JackParams;
 }
 
 export interface HubClients {

@@ -25,7 +25,11 @@ import { startJacktripAsync } from './JacktripAsync';
  * @returns RunningCommand
  */
 export const startJacktripP2PClient = (
-  {
+  jacktripP2PClientParams: JacktripP2PClientParams,
+  { onLog }: OptionalParams
+): RunningCommand => {
+  // Destructure the variables
+  const {
     clientName = JACKTRIP_DEFAULT_CLIENT_NAME,
     host = 'localhost',
     channels = 2,
@@ -38,9 +42,8 @@ export const startJacktripP2PClient = (
     realtimePriority = true,
     localPort = 4464,
     remotePort = 4464,
-  }: JacktripP2PClientParams,
-  { onLog }: OptionalParams
-): RunningCommand => {
+  } = jacktripP2PClientParams;
+
   // Do some validation
   if (!validateBitRate(bitRate)) throw new BitRateNotValidException();
 
@@ -151,7 +154,11 @@ export const startJacktripP2PClient = (
     });
 
     // Return the command
-    return { command: runningCommand.command };
+    return {
+      command: runningCommand.command,
+      pid: runningCommand.process.pid,
+      params: jacktripP2PClientParams,
+    };
   } catch (e: any) {
     throw new StartJacktripFailedException(e.message);
   }
@@ -171,3 +178,40 @@ export const startJacktripP2PClientAsync = (
     StartJacktripType.P2PClient,
     optionalParams
   );
+
+/**
+ * Start Jacktrip with multiple clients, based on an array of localPorts
+ * @param jacktripP2PClientParams
+ * @param localPorts
+ * @returns
+ */
+export const startJacktriptP2PMultipleClientsAsync = async (
+  jacktripP2PClientParams: Omit<JacktripP2PClientParams, 'localPort'>,
+  localPorts: number[]
+): Promise<RunningCommand[]> => {
+  // validate
+  if (!localPorts || localPorts.length === 0) return [];
+
+  // create a list of promises
+  const startJacktripP2PClientAsyncParams: JacktripP2PClientParams[] =
+    localPorts.map(
+      (localPort): JacktripP2PClientParams => ({
+        ...jacktripP2PClientParams,
+        localPort,
+      })
+    );
+
+  // create the promises
+  const startJacktripP2PClientAsyncPromises: Promise<RunningCommand>[] =
+    startJacktripP2PClientAsyncParams.map((params) =>
+      startJacktripP2PClientAsync(params, {})
+    );
+
+  // execute them all
+  const runningCommands: RunningCommand[] = await Promise.all(
+    startJacktripP2PClientAsyncPromises
+  );
+
+  // return the running commands
+  return runningCommands;
+};
