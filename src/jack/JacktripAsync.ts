@@ -13,6 +13,7 @@ import { startJacktripHubServer } from './JacktripHubServer';
 import { RequestTimedOutException } from '../exceptions';
 import { TIMEOUT_AFTER_RUNNING_PROCESS } from '../consts';
 import { startJacktripP2PServer } from './JacktripP2PServer';
+import { startJacktripP2PClient } from './JacktripP2PClient';
 
 /**
  * Starts a a Jacktrip instance and waits until the instance is fully started.
@@ -46,6 +47,12 @@ export const startJacktripAsync = (
           break;
         case StartJacktripType.HubClient:
           runningCommand = startJacktripHubClient(
+            jacktripParams,
+            optionalParams
+          );
+          break;
+        case StartJacktripType.P2PClient:
+          runningCommand = startJacktripP2PClient(
             jacktripParams,
             optionalParams
           );
