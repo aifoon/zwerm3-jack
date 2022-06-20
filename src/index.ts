@@ -35,6 +35,7 @@ import {
 } from './jack/JackD';
 import { isJacktripRunning } from './jack/Jacktrip';
 import { getJackHubClients } from './jack/JackHubClients';
+import { getJackSystemClients } from './jack/JackSystemClients';
 import { connectChannel, disconnectChannel } from './jack/JackChannels';
 import * as Zwerm3JackTypes from './interfaces';
 import * as Zwerm3JackEnums from './enums';
@@ -47,6 +48,7 @@ export {
   isJackDmpRunning,
   isJacktripRunning,
   getJackHubClients,
+  getJackSystemClients,
   getRunningProcesses,
   killAllProcesses,
   killJacktrip,

@@ -84,6 +84,11 @@ export interface HubClients {
   receiveChannels: string[];
 }
 
+export interface SystemClients {
+  captureChannels: string[];
+  playbackChannels: string[];
+}
+
 export interface ChannelConnection {
   source: string;
   destination: string;

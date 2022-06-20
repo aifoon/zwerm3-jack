@@ -8,6 +8,7 @@ import { isJacktripRunning } from './jack/Jacktrip';
 import { startJacktripP2PServer } from './jack/JacktripP2PServer';
 import { startJacktriptP2PMultipleClientsAsync } from './jack/JacktripP2PClient';
 import { getJacktripPaths } from './jack/JacktripPaths';
+import { getJackSystemClients } from './jack/JackSystemClients';
 import {
   getRunningProcesses,
   killAllProcesses,
@@ -61,6 +62,28 @@ describe('Jack and Jacktrip', () => {
 
   afterAll(async () => {
     await killAllProcesses();
+  });
+
+  test('Running Jack and check if we got capture and playback devices', async () => {
+    await killAllProcesses();
+
+    // start jack
+    await startJackDmpAsync(
+      {
+        device: '',
+        inputChannels: 2,
+        outputChannels: 2,
+        bufferSize: 1024,
+        sampleRate: 48000,
+        periods: 2,
+      },
+      {}
+    );
+
+    const systemClients = getJackSystemClients();
+
+    expect(systemClients.captureChannels.length).toBeGreaterThan(0);
+    expect(systemClients.playbackChannels.length).toBeGreaterThan(0);
   });
 
   test('Running Jack and multiple Jacktrip clients', async () => {
