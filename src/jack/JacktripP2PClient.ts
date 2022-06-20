@@ -43,6 +43,7 @@ export const startJacktripP2PClient = (
     realtimePriority = true,
     localPort = 4464,
     remotePort = 4464,
+    connectDefaultAudioPorts = true,
   } = jacktripP2PClientParams;
 
   // Do some validation
@@ -106,6 +107,13 @@ export const startJacktripP2PClient = (
     flag: '-P',
     value: remotePort.toString(),
   });
+
+  // If we don't want to connect the default audio ports
+  if (!connectDefaultAudioPorts) {
+    cliParams.addParam({
+      flag: '-D',
+    });
+  }
 
   // Sets the receive channels
   cliParams.addParam({

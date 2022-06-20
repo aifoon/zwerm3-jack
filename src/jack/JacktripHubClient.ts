@@ -42,6 +42,7 @@ export const startJacktripHubClient = (
     realtimePriority = true,
     localPort = 4464,
     remotePort = 4464,
+    connectDefaultAudioPorts = true,
   } = jacktripHubClientParams;
 
   // Do some validation
@@ -99,6 +100,13 @@ export const startJacktripHubClient = (
     flag: '-K',
     value: clientName,
   });
+
+  // If we don't want to connect the default audio ports
+  if (!connectDefaultAudioPorts) {
+    cliParams.addParam({
+      flag: '-D',
+    });
+  }
 
   // Sets the local port
   cliParams.addParam({

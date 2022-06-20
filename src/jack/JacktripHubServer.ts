@@ -35,6 +35,7 @@ export const startJacktripHubServer = (
     debug = false,
     realtimePriority = true,
     localPort = 4464,
+    connectDefaultAudioPorts = true,
   } = jacktripHubServerParams;
 
   // Do some validate
@@ -79,6 +80,13 @@ export const startJacktripHubServer = (
   cliParams.addParam({
     flag: '-z',
   });
+
+  // If we don't want to connect the default audio ports
+  if (!connectDefaultAudioPorts) {
+    cliParams.addParam({
+      flag: '-D',
+    });
+  }
 
   // Sets debug mode
   if (debug) {

@@ -25,6 +25,7 @@ export interface JacktripParams {
   queueBuffer?: number;
   realtimePriority?: boolean;
   localPort?: number;
+  connectDefaultAudioPorts?: boolean;
 }
 
 export interface JacktripHubServerParams extends JacktripParams {
