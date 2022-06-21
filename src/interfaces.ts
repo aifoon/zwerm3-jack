@@ -67,6 +67,7 @@ export interface JackParams {
 export interface JacktripP2PClient {
   localPort: number;
   clientName: string;
+  host: string;
 }
 
 export interface RunningCommand {

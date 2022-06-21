@@ -197,7 +197,7 @@ export const startJacktripP2PClientAsync = (
 export const startJacktriptP2PMultipleClientsAsync = async (
   jacktripP2PClientParams: Omit<
     JacktripP2PClientParams,
-    'localPort' | 'clientName'
+    'localPort' | 'clientName' | 'host'
   >,
   clients: JacktripP2PClient[]
 ): Promise<RunningCommand[]> => {
@@ -207,10 +207,11 @@ export const startJacktriptP2PMultipleClientsAsync = async (
   // create a list of promises
   const startJacktripP2PClientAsyncParams: JacktripP2PClientParams[] =
     clients.map(
-      ({ localPort, clientName }): JacktripP2PClientParams => ({
+      ({ localPort, clientName, host }): JacktripP2PClientParams => ({
         ...jacktripP2PClientParams,
         localPort,
         clientName,
+        host,
       })
     );
 
