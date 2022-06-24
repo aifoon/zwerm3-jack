@@ -14,7 +14,6 @@ import {
   killAllProcesses,
   killProcessByPid,
 } from './jack/Kill';
-import { connectChannel, disconnectChannel } from './jack/JackChannels';
 
 jest.setTimeout(60000);
 
