@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { spawnSync } from 'child_process';
 import { ChannelConnection } from '../interfaces';
 import { getJackPaths } from './JackPaths';
 
@@ -12,9 +12,16 @@ export const connectChannel = ({
   source,
   destination,
 }: ChannelConnection): string => {
-  const jackPaths = getJackPaths();
-  execSync(`${jackPaths.jackConnect} ${source} ${destination}`);
-  return `** Connecting '${source}' to '${destination}'.`;
+  try {
+    const jackPaths = getJackPaths();
+    spawnSync(jackPaths.jackConnect, [source, destination]);
+    // Left this for testing purpose...
+    // const p = spawnSync(jackPaths.jackConnect, [source, destination]);
+    // console.log(p.stderr.toString());
+    return `** Connecting '${source}' to '${destination}'.`;
+  } catch (e: any) {
+    return `** Connecting '${source}' to '${destination}'.`;
+  }
 };
 
 /**
@@ -23,11 +30,18 @@ export const connectChannel = ({
  * @param param0 ChannelConnection
  * @returns A message about what is done
  */
-export const disconnectChannel = ({
+export const disconnectChannel = async ({
   source,
   destination,
-}: ChannelConnection): string => {
-  const jackPaths = getJackPaths();
-  execSync(`${jackPaths.jackDisconnect} ${source} ${destination}`);
-  return `** Disconnecting '${source}' from '${destination}'.`;
+}: ChannelConnection) => {
+  try {
+    const jackPaths = getJackPaths();
+    spawnSync(jackPaths.jackDisconnect, [source, destination]);
+    // Left this for testing purpose...
+    // const p = spawnSync(jackPaths.jackDisconnect, [source, destination]);
+    // console.log(source, ': ', p.stderr.toString());
+    return `** Disconnecting '${source}' from '${destination}'.`;
+  } catch (e: any) {
+    return `** Disconnecting '${source}' to '${destination}'.`;
+  }
 };
