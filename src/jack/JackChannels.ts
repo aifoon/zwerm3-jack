@@ -1,4 +1,4 @@
-import { spawnSync } from 'child_process';
+import { execSync } from 'child_process';
 import { ChannelConnection } from '../interfaces';
 import { getJackPaths } from './JackPaths';
 
@@ -13,10 +13,8 @@ export const connectChannel = ({
   destination,
 }: ChannelConnection): string => {
   const jackPaths = getJackPaths();
-  const result = spawnSync(jackPaths.jackConnect, [source, destination]);
-  return `** Connecting '${source}' to '${destination}'.\n${
-    !!result.stderr && `stderr: ${result.stderr}`
-  }`;
+  execSync(`${jackPaths.jackConnect} ${source} ${destination}`);
+  return `** Connecting '${source}' to '${destination}'.`;
 };
 
 /**
@@ -30,8 +28,6 @@ export const disconnectChannel = ({
   destination,
 }: ChannelConnection): string => {
   const jackPaths = getJackPaths();
-  const result = spawnSync(jackPaths.jackDisconnect, [source, destination]);
-  return `** Disconnecting '${source}' to '${destination}'.\n${
-    !!result.stderr && `stderr: ${result.stderr}`
-  }`;
+  execSync(`${jackPaths.jackDisconnect} ${source} ${destination}`);
+  return `** Disconnecting '${source}' from '${destination}'.`;
 };
