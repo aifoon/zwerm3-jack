@@ -14,6 +14,11 @@ import {
   killAllProcesses,
   killProcessByPid,
 } from './jack/Kill';
+// import {
+//   connectChannel,
+//   disconnectChannel,
+//   hasConnection,
+// } from './jack/JackChannels';
 
 jest.setTimeout(60000);
 
@@ -33,28 +38,15 @@ describe('Paths', () => {
     expect(jacktripPaths).toHaveProperty('jackTrip');
   });
 
-  // test('Disconnecting/Connecting audio connections', () => {
-  //   const channels = [1, 2, 5, 9, 8, 7];
-  //   // for (let i = 0; i < 1; i += 1) {
-
-  //   channels.forEach((channel) => {
-  //     const source = `system:capture_${channel}`;
-  //     const destination = `bee${channel}:send_1`;
-  //     disconnectChannel({
-  //       source,
-  //       destination,
-  //     });
+  // test('Connected Audio', async () => {
+  //   await connectChannel({
+  //     source: 'system:capture_4',
+  //     destination: 'JackTrip:send_1',
   //   });
-
-  //   channels.forEach((channel) => {
-  //     const source = `system:capture_${channel}`;
-  //     const destination = `bee${channel}:send_1`;
-  //     connectChannel({
-  //       source,
-  //       destination,
-  //     });
+  //   await disconnectChannel({
+  //     source: 'system:capture_4',
+  //     destination: 'JackTrip:send_1',
   //   });
-  //   // }
   // });
 });
 
