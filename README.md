@@ -14,7 +14,10 @@ This will disconnect a sender and a receiver.
 This will get all the paths related to Jack. This function will check the OS (Windows, macOS or Linux) to generate the paths.
 
 ### `getJacktripPaths()`
-This will get all the paths related to Jacktript. This function will get the Jacktrip binary used in this package.
+This will get all the paths related to Jacktrip. This function will get the Jacktrip binary used in this package.
+
+### `getJackSystemClients()`
+Get the system clients of Jack.
 
 ### `isJackDmpRunning()`
 This will return a boolean whether Jack is running or not.
@@ -45,7 +48,6 @@ Start a Jack instance on the host.
 
 **optionalParams**
 - `onLog: (message: string) => void`
-- `softwareVersion: string`
 
 ### `startJackDmpAsync(jackParams, optionalParams)`
 Starts a Jack instance on the host. This returns a promise, so waiting until the Jack instance started is possible.
@@ -65,11 +67,29 @@ Start a Jacktrip instance as a server on the host.
 ### `startJacktripServerAsync(jacktripServerParams)`
 Start a Jacktrip instance as a server on the host. This returns a promise, so waiting until the Jacktrip instance started is possible.
 
-### `startJacktripClient()`
-Start a Jacktrip instance as a client on the host.
+### `startJacktripHubClient()`
+Start a Jacktrip instance as a client on the HUB server.
 
-### `startJacktripClientAsync()`
-Start a Jacktrip instance as a client on the host. This returns a promise, so waiting until the Jacktrip instance started is possible.
+### `startJacktripHubClientAsync()`
+Start a Jacktrip instance as a client on the HUB server. This returns a promise, so waiting until the Jacktrip instance started is possible.
+
+### `startJacktripHubServer()`
+Start a Jacktrip HUB server instance.
+
+### `startJacktripHubClientAsync()`
+Start a Jacktrip HUB server instance. This returns a promise, so waiting until the Jacktrip instance started is possible.
+
+### `startJacktripP2PClient()`
+Start a Jacktrip Peer 2 Peer client.
+
+### `startJacktripP2PClientAsync()`
+Start a Jacktrip Peer 2 Peer client asynchronously.
+
+### `startJacktripP2PServer()`
+Start a Jacktrip Peer 2 Peer server.
+
+### `startJacktripP2PServerAsync()`
+Start a Jacktrip Peer 2 Peer server asynchronously.
 
 ## Authors
 
