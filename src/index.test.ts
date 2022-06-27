@@ -9,11 +9,7 @@ import { startJacktripP2PServer } from './jack/JacktripP2PServer';
 import { startJacktriptP2PMultipleClientsAsync } from './jack/JacktripP2PClient';
 import { getJacktripPaths } from './jack/JacktripPaths';
 import { getJackSystemClients } from './jack/JackSystemClients';
-import {
-  getRunningProcesses,
-  killAllProcesses,
-  killProcessByPid,
-} from './jack/Kill';
+import { getRunningProcesses, killAllProcesses } from './jack/Kill';
 
 jest.setTimeout(60000);
 

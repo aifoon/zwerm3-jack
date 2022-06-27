@@ -42,7 +42,7 @@ export const getJackSystemClients = (): Promise<SystemClients> => {
         });
 
         resolve(systemClients);
-      }, 0);
+      }, 750);
     });
   } catch (e: any) {
     throw new Exception(e.message);

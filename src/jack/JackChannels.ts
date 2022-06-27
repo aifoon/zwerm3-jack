@@ -92,7 +92,7 @@ export const disconnectChannel = (
     const jackPaths = getJackPaths();
     spawnSync(jackPaths.jackDisconnect, [source, destination]);
     if (currentTry >= 5) resolve(false);
-    if (!hasConnection({ source, destination })) {
+    if (hasConnection({ source, destination })) {
       setTimeout(async () => {
         if (hasConnection({ source, destination }))
           await disconnectChannel({ source, destination }, currentTry + 1);
