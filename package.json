@@ -10,7 +10,7 @@
     "clean": "rimraf dist/",
     "copy-resources": "cp -r src/resources dist/",
     "test": "node node_modules/jest/bin/jest.js",
-    "test:watch": "node node_modules/jest/bin/jest.js --watch"
+    "test:watch": "node node_modules/jest/bin/jest.js --watch --detectOpenHandles"
   },
   "repository": {
     "type": "git",

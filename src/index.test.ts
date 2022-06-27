@@ -14,12 +14,6 @@ import {
   killAllProcesses,
   killProcessByPid,
 } from './jack/Kill';
-import {
-  connectChannel,
-  disconnectChannel,
-  hasConnection,
-} from './jack/JackChannels';
-import { getJackHubClients } from './jack/JackHubClients';
 
 jest.setTimeout(60000);
 
@@ -40,27 +34,6 @@ describe('Paths', () => {
   });
 });
 
-describe('Killing', () => {
-  test('Start Jack and Kill by pid', async () => {
-    // start jack
-    const runningCommand = await startJackDmpAsync(
-      {
-        device: '',
-        inputChannels: 2,
-        outputChannels: 2,
-        bufferSize: 1024,
-        sampleRate: 48000,
-        periods: 2,
-      },
-      {}
-    );
-
-    await killProcessByPid(runningCommand.pid);
-    const jackIsRunning = await isJackDmpRunning();
-    expect(jackIsRunning).toBeFalsy();
-  });
-});
-
 describe('Jack and Jacktrip', () => {
   beforeEach(async () => {
     await killAllProcesses();
@@ -68,28 +41,6 @@ describe('Jack and Jacktrip', () => {
 
   afterAll(async () => {
     await killAllProcesses();
-  });
-
-  test('Running Jack and check if we got capture and playback devices', async () => {
-    await killAllProcesses();
-
-    // start jack
-    await startJackDmpAsync(
-      {
-        device: '',
-        inputChannels: 2,
-        outputChannels: 2,
-        bufferSize: 1024,
-        sampleRate: 48000,
-        periods: 2,
-      },
-      {}
-    );
-
-    const systemClients = getJackSystemClients();
-
-    expect(systemClients.captureChannels.length).toBeGreaterThan(0);
-    expect(systemClients.playbackChannels.length).toBeGreaterThan(0);
   });
 
   test('Running Jack and multiple Jacktrip clients', async () => {
@@ -144,6 +95,11 @@ describe('Jack and Jacktrip', () => {
     // check if jack and   jacktrip are running
     const jackIsRunning = await isJackDmpRunning();
     const jacktripIsRunning = await isJacktripRunning();
+
+    // expect systemclients
+    const systemClients = await getJackSystemClients();
+    expect(systemClients.captureChannels.length).toBeGreaterThan(0);
+    expect(systemClients.playbackChannels.length).toBeGreaterThan(0);
 
     // expect jack and jacktrip to be running
     expect(jackIsRunning).toBeTruthy();
