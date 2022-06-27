@@ -59,18 +59,23 @@ export const hasConnection = ({ source, destination }: ChannelConnection) => {
  * @param param0 ChannelConnection
  * @returns A message about what is done
  */
-export const connectChannel = ({
-  source,
-  destination,
-}: ChannelConnection): Promise<string> =>
+export const connectChannel = async (
+  { source, destination }: ChannelConnection,
+  currentTry = 0
+): Promise<boolean> =>
   new Promise((resolve) => {
     const jackPaths = getJackPaths();
     spawnSync(jackPaths.jackConnect, [source, destination]);
-    setTimeout(async () => {
-      if (!hasConnection({ source, destination }))
-        await connectChannel({ source, destination });
-      resolve(`** Connected ${source} to ${destination}.`);
-    }, 500);
+    if (currentTry >= 5) resolve(false);
+    if (!hasConnection({ source, destination })) {
+      setTimeout(async () => {
+        if (!hasConnection({ source, destination })) {
+          await connectChannel({ source, destination }, currentTry + 1);
+        }
+      }, 5000);
+    } else {
+      resolve(true);
+    }
   });
 
 /**
