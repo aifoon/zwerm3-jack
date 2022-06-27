@@ -72,7 +72,7 @@ export const connectChannel = async (
         if (!hasConnection({ source, destination })) {
           await connectChannel({ source, destination }, currentTry + 1);
         }
-      }, 5000);
+      }, 500);
     } else {
       resolve(true);
     }
@@ -84,16 +84,20 @@ export const connectChannel = async (
  * @param param0 ChannelConnection
  * @returns A message about what is done
  */
-export const disconnectChannel = ({
-  source,
-  destination,
-}: ChannelConnection): Promise<string> =>
+export const disconnectChannel = (
+  { source, destination }: ChannelConnection,
+  currentTry = 0
+): Promise<boolean> =>
   new Promise((resolve) => {
     const jackPaths = getJackPaths();
     spawnSync(jackPaths.jackDisconnect, [source, destination]);
-    setTimeout(async () => {
-      if (hasConnection({ source, destination }))
-        await disconnectChannel({ source, destination });
-      resolve(`** Disconnected ${source} from ${destination}.`);
-    }, 500);
+    if (currentTry >= 5) resolve(false);
+    if (!hasConnection({ source, destination })) {
+      setTimeout(async () => {
+        if (hasConnection({ source, destination }))
+          await disconnectChannel({ source, destination }, currentTry + 1);
+      }, 500);
+    } else {
+      resolve(true);
+    }
   });

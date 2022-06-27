@@ -12,32 +12,38 @@ import { Exception } from '../exceptions';
  *
  * @returns HubClients
  */
-export const getJackHubClients = (): HubClients => {
+export const getJackHubClients = (): Promise<HubClients> => {
   try {
-    // Get some information to work with
-    const jackPaths = getJackPaths();
+    return new Promise((resolve) => {
+      // Get some information to work with
+      const jackPaths = getJackPaths();
 
-    // Get the connections
-    const result = spawnSync(jackPaths.jackLsp);
-    const output = result.stdout.toString().split('\n');
+      // Get the connections
+      const result = spawnSync(jackPaths.jackLsp);
 
-    // Create data vars
-    const hubClients: HubClients = {
-      sendChannels: [],
-      receiveChannels: [],
-    };
+      // delay before for fetching the stdout result
+      setTimeout(() => {
+        const output = result.stdout.toString().split('\n');
 
-    // Loop over connections and add them to the internal arrays
-    output.forEach((e) => {
-      if (e.includes('send_')) {
-        hubClients.sendChannels.push(e);
-      }
-      if (e.includes('receive_')) {
-        hubClients.receiveChannels.push(e);
-      }
+        // Create data vars
+        const hubClients: HubClients = {
+          sendChannels: [],
+          receiveChannels: [],
+        };
+
+        // Loop over connections and add them to the internal arrays
+        output.forEach((e) => {
+          if (e.includes('send_')) {
+            hubClients.sendChannels.push(e);
+          }
+          if (e.includes('receive_')) {
+            hubClients.receiveChannels.push(e);
+          }
+        });
+
+        resolve(hubClients);
+      }, 750);
     });
-
-    return hubClients;
   } catch (e: any) {
     throw new Exception(e.message);
   }

@@ -12,32 +12,38 @@ import { Exception } from '../exceptions';
  *
  * @returns SystemClients
  */
-export const getJackSystemClients = (): SystemClients => {
+export const getJackSystemClients = (): Promise<SystemClients> => {
   try {
-    // Get some information to work with
-    const jackPaths = getJackPaths();
+    return new Promise((resolve) => {
+      // Get some information to work with
+      const jackPaths = getJackPaths();
 
-    // Get the connections
-    const result = spawnSync(jackPaths.jackLsp);
-    const output = result.stdout.toString().split('\n');
+      // Get the connections
+      const result = spawnSync(jackPaths.jackLsp);
 
-    // Create data vars
-    const systemClients: SystemClients = {
-      captureChannels: [],
-      playbackChannels: [],
-    };
+      // delay before for fetching the stdout result
+      setTimeout(() => {
+        const output = result.stdout.toString().split('\n');
 
-    // Loop over connections and add them to the internal arrays
-    output.forEach((e) => {
-      if (e.includes('capture_')) {
-        systemClients.captureChannels.push(e);
-      }
-      if (e.includes('playback_')) {
-        systemClients.playbackChannels.push(e);
-      }
+        // Create data vars
+        const systemClients: SystemClients = {
+          captureChannels: [],
+          playbackChannels: [],
+        };
+
+        // Loop over connections and add them to the internal arrays
+        output.forEach((e) => {
+          if (e.includes('capture_')) {
+            systemClients.captureChannels.push(e);
+          }
+          if (e.includes('playback_')) {
+            systemClients.playbackChannels.push(e);
+          }
+        });
+
+        resolve(systemClients);
+      }, 750);
     });
-
-    return systemClients;
   } catch (e: any) {
     throw new Exception(e.message);
   }
