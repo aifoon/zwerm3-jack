@@ -76,7 +76,7 @@ describe('Jack and Jacktrip', () => {
     );
 
     // start jacktrip
-    await startJacktripP2PServer({}, {});
+    const runningJacktripCommand = await startJacktripP2PServer({}, {});
 
     // check if jack and   jacktrip are running
     const jackIsRunning = await isJackDmpRunning();
