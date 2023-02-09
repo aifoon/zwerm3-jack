@@ -8,16 +8,34 @@ import {
   JACK_BASE_PATH_DARWIN,
   JACK_BASE_PATH_LINUX,
 } from '../consts';
+import Zwerm3Jack from '../Zwerm3Jack';
+
+/**
+ * Gets the jack folder path (cached or from static constants)
+ * @returns a string value that represents the jack folder path
+ */
+const getJackFolderPath = (): string => {
+  if (Zwerm3Jack.hasCustomJackFolderPath) return Zwerm3Jack.jackFolderPath;
+
+  switch (process.platform) {
+    case 'win32':
+      return JACK_BASE_PATH_WIN;
+    case 'darwin':
+      return JACK_BASE_PATH_DARWIN;
+    default:
+      return JACK_BASE_PATH_LINUX;
+  }
+};
 
 /**
  * This will return the Windows Paths for the Jack instance
  * @returns The Windows JackPaths
  */
 const jackWinPaths = (): JackPaths => ({
-  jackConnect: `${JACK_BASE_PATH_WIN}jack_connect.exe`,
-  jackDisconnect: `${JACK_BASE_PATH_WIN}jack_disconnect.exe`,
-  jackDmp: `${JACK_BASE_PATH_WIN}jackd.exe`,
-  jackLsp: `${JACK_BASE_PATH_WIN}jack_lsp.exe`,
+  jackConnect: `${getJackFolderPath()}jack_connect.exe`,
+  jackDisconnect: `${getJackFolderPath()}jack_disconnect.exe`,
+  jackDmp: `${getJackFolderPath()}jackd.exe`,
+  jackLsp: `${getJackFolderPath()}jack_lsp.exe`,
 });
 
 /**
@@ -25,10 +43,10 @@ const jackWinPaths = (): JackPaths => ({
  * @returns The OSX JackPaths
  */
 const jackDarwinPaths = (): JackPaths => ({
-  jackConnect: `${JACK_BASE_PATH_DARWIN}/jack_connect`,
-  jackDisconnect: `${JACK_BASE_PATH_DARWIN}/jack_disconnect`,
-  jackDmp: `${JACK_BASE_PATH_DARWIN}/jackd`,
-  jackLsp: `${JACK_BASE_PATH_DARWIN}/jack_lsp`,
+  jackConnect: `${getJackFolderPath()}/jack_connect`,
+  jackDisconnect: `${getJackFolderPath()}/jack_disconnect`,
+  jackDmp: `${getJackFolderPath()}/jackd`,
+  jackLsp: `${getJackFolderPath()}/jack_lsp`,
 });
 
 /**
@@ -36,10 +54,10 @@ const jackDarwinPaths = (): JackPaths => ({
  * @returns The Linux JackPaths
  */
 const jackLinuxPaths = (): JackPaths => ({
-  jackConnect: `${JACK_BASE_PATH_LINUX}/jack_connect`,
-  jackDisconnect: `${JACK_BASE_PATH_LINUX}/jack_connect`,
-  jackDmp: `${JACK_BASE_PATH_LINUX}/jackd`,
-  jackLsp: `${JACK_BASE_PATH_LINUX}/jack_lsp`,
+  jackConnect: `${getJackFolderPath()}/jack_connect`,
+  jackDisconnect: `${getJackFolderPath()}/jack_connect`,
+  jackDmp: `${getJackFolderPath()}/jackd`,
+  jackLsp: `${getJackFolderPath()}/jack_lsp`,
 });
 
 /**

@@ -39,6 +39,7 @@ import { getJackSystemClients } from './jack/JackSystemClients';
 import { connectChannel, disconnectChannel } from './jack/JackChannels';
 import * as Zwerm3JackTypes from './interfaces';
 import * as Zwerm3JackEnums from './enums';
+import * as Zwerm3Jack from './Zwerm3Jack';
 
 export {
   connectChannel,
@@ -67,4 +68,5 @@ export {
   startJacktriptP2PMultipleClientsAsync,
   Zwerm3JackTypes,
   Zwerm3JackEnums,
+  Zwerm3Jack,
 };

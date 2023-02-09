@@ -5,13 +5,16 @@
 import * as path from 'path';
 import { JACKTRIP_BIN_PATH } from '../consts';
 import { JacktripPaths } from '../interfaces';
+import Zwerm3Jack from '../Zwerm3Jack';
 
 /**
  * This will return the Windows Paths for the Jacktrip instance
  * @returns The Windows JackPaths
  */
 const jacktripWinPaths = (): JacktripPaths => ({
-  jackTrip: path.join(JACKTRIP_BIN_PATH, 'win32', 'jacktrip.exe'),
+  jackTrip: Zwerm3Jack.hasCustomJacktripBinPath
+    ? Zwerm3Jack.jacktripBinPath
+    : path.join(JACKTRIP_BIN_PATH, 'win32', 'jacktrip.exe'),
 });
 
 /**
@@ -19,7 +22,9 @@ const jacktripWinPaths = (): JacktripPaths => ({
  * @returns The OSX JacktripPaths
  */
 const jacktripDarwinPaths = (): JacktripPaths => ({
-  jackTrip: path.join(JACKTRIP_BIN_PATH, 'darwin', 'jacktrip'),
+  jackTrip: Zwerm3Jack.hasCustomJacktripBinPath
+    ? Zwerm3Jack.jacktripBinPath
+    : path.join(JACKTRIP_BIN_PATH, 'darwin', 'jacktrip'),
 });
 
 /**
@@ -27,12 +32,14 @@ const jacktripDarwinPaths = (): JacktripPaths => ({
  * @returns The Linux JacktripPaths
  */
 const jacktripLinuxPaths = (): JacktripPaths => ({
-  jackTrip: path.join(
-    JACKTRIP_BIN_PATH,
-    'linux',
-    process.arch === 'arm' ? 'arm' : 'x64',
-    'jacktrip'
-  ),
+  jackTrip: Zwerm3Jack.hasCustomJacktripBinPath
+    ? Zwerm3Jack.jacktripBinPath
+    : path.join(
+        JACKTRIP_BIN_PATH,
+        'linux',
+        process.arch === 'arm' ? 'arm' : 'x64',
+        'jacktrip'
+      ),
 });
 
 /**

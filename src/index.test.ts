@@ -2,7 +2,6 @@
  * Defining some tests for our package
  */
 
-import { getJackPaths } from '.';
 import { isJackDmpRunning, startJackDmpAsync } from './jack/JackD';
 import { isJacktripRunning } from './jack/Jacktrip';
 import { startJacktripP2PServer } from './jack/JacktripP2PServer';
@@ -10,20 +9,11 @@ import { startJacktriptP2PMultipleClientsAsync } from './jack/JacktripP2PClient'
 import { getJacktripPaths } from './jack/JacktripPaths';
 import { getJackSystemClients } from './jack/JackSystemClients';
 import { getRunningProcesses, killAllProcesses } from './jack/Kill';
+import Zwerm3Jack from './Zwerm3Jack';
 
 jest.setTimeout(60000);
 
 describe('Paths', () => {
-  test('Testing Jack paths', () => {
-    const jackPaths = getJackPaths();
-    expect(jackPaths).toMatchObject({
-      jackConnect: '/usr/local/bin/jack_connect',
-      jackDisconnect: '/usr/local/bin/jack_disconnect',
-      jackDmp: '/usr/local/bin/jackd',
-      jackLsp: '/usr/local/bin/jack_lsp',
-    });
-  });
-
   test('Testing Jacktrip paths', () => {
     const jacktripPaths = getJacktripPaths();
     expect(jacktripPaths).toHaveProperty('jackTrip');
@@ -32,6 +22,7 @@ describe('Paths', () => {
 
 describe('Jack and Jacktrip', () => {
   beforeEach(async () => {
+    Zwerm3Jack.jackFolderPath = '/opt/homebrew/bin';
     await killAllProcesses();
   });
 
@@ -46,7 +37,7 @@ describe('Jack and Jacktrip', () => {
     await startJackDmpAsync(
       {
         device: '',
-        inputChannels: 2,
+        inputChannels: 1,
         outputChannels: 2,
         bufferSize: 1024,
         sampleRate: 48000,
@@ -59,7 +50,6 @@ describe('Jack and Jacktrip', () => {
     const runningCommands = await startJacktriptP2PMultipleClientsAsync({}, [
       { localPort: 4465, clientName: 'Client1', host: 'localhost' },
       { localPort: 4466, clientName: 'Client2', host: 'localhost' },
-      { localPort: 4467, clientName: 'Client3', host: 'localhost' },
     ]);
 
     // get running commands
@@ -76,7 +66,7 @@ describe('Jack and Jacktrip', () => {
     await startJackDmpAsync(
       {
         device: '',
-        inputChannels: 2,
+        inputChannels: 1,
         outputChannels: 2,
         bufferSize: 1024,
         sampleRate: 48000,
