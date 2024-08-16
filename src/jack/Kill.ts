@@ -24,7 +24,7 @@ export const getRunningProcesses = (
   }[]
 > =>
   new Promise((resolve) => {
-    find('name', command, true).then((list: any) => {
+    find('name', command, false).then((list: any) => {
       resolve(list);
     });
   });

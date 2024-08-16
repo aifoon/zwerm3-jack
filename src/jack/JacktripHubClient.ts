@@ -98,7 +98,7 @@ export const startJacktripHubClient = (
   // Sets the remote name (is the clientname)
   cliParams.addParam({
     flag: '-K',
-    value: clientName,
+    value: `${clientName}-remote`,
   });
 
   // If we don't want to connect the default audio ports
