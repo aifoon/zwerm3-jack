@@ -1,6 +1,6 @@
 {
   "name": "@zwerm3/jack",
-  "version": "1.2.21",
+  "version": "1.2.22",
   "description": "A package with all the jack and jacktrip logic for zwerm3",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
