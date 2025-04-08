@@ -3,7 +3,7 @@
  */
 
 import { spawn } from 'child_process';
-import { HubPatchMode, StartJacktripType } from '../enums';
+import { BitRate, HubPatchMode, StartJacktripType } from '../enums';
 import {
   JacktripHubServerParams,
   RunningCommand,
@@ -30,6 +30,7 @@ export const startJacktripHubServer = (
   // Destructure the variables
   const {
     hubPatchMode = HubPatchMode.NoConnections,
+    bitRate = BitRate.Sixteen,
     channels = 2,
     queueBuffer = 4,
     debug = false,
@@ -68,6 +69,18 @@ export const startJacktripHubServer = (
   cliParams.addParam({
     flag: '-q',
     value: queueBuffer.toString(),
+  });
+
+  // Add the bit rate (defaults 16)
+  cliParams.addParam({
+    flag: '-b',
+    value: bitRate.toString(),
+  });
+
+  // Add the overflow limiting on both incoming and outgoing audio
+  cliParams.addParam({
+    flag: '-O',
+    value: 'io',
   });
 
   // Set the local port

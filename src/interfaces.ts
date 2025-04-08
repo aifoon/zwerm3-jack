@@ -29,6 +29,7 @@ export interface JacktripParams {
 }
 
 export interface JacktripHubServerParams extends JacktripParams {
+  bitRate?: BitRate;
   hubPatchMode?: HubPatchMode;
 }
 

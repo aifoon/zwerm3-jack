@@ -83,6 +83,12 @@ export const startJacktripHubClient = (
     value: bitRate.toString(),
   });
 
+  // Add the overflow limiting on both incoming and outgoing audio
+  cliParams.addParam({
+    flag: '-O',
+    value: 'io',
+  });
+
   // Packet Redundancy to avoid glitches with packet losses (defaults 1)
   cliParams.addParam({
     flag: '-r',
