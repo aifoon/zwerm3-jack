@@ -43,6 +43,7 @@ export const startJacktripHubClient = (
     localPort = 4464,
     remotePort = 4464,
     connectDefaultAudioPorts = true,
+    compressor = false,
   } = jacktripHubClientParams;
 
   // Do some validation
@@ -106,6 +107,14 @@ export const startJacktripHubClient = (
     flag: '-K',
     value: `${clientName}-remote`,
   });
+
+  if (compressor) {
+    // Sets the compressor
+    cliParams.addParam({
+      flag: '-f',
+      value: `"i:c, o:c"`,
+    });
+  }
 
   // If we don't want to connect the default audio ports
   if (!connectDefaultAudioPorts) {

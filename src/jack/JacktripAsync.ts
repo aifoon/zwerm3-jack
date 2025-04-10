@@ -85,7 +85,7 @@ export const startJacktripAsync = (
         }
 
         // Are we running?
-        isJacktripRunning().then((isRunning) => {
+        isJacktripRunning(runningCommand.pid || 0).then((isRunning) => {
           // If so, resolve the promise and clear interval
           if (isRunning) {
             clearInterval(pollInterval);

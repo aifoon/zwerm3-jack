@@ -41,6 +41,7 @@ export interface JacktripHubClientParams extends JacktripParams {
   redundancy?: number;
   sendChannels?: number;
   remotePort?: number;
+  compressor?: boolean;
 }
 
 export interface JacktripP2PServerParams extends JacktripParams {
